@@ -16,6 +16,8 @@ const StringRef CosName = "cos";
 const StringRef TanName = "tan";
 const StringRef SqrtName = "sqrt";
 
+const double PIover4 = 0.7853981633974483;
+
 // Extending PatternMatch.h 
 template <typename OP_t> struct AnyUnaryCall_match {
   OP_t X;

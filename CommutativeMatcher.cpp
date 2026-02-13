@@ -32,14 +32,23 @@ static bool log1pmd(Instruction &Inst) {
 
 // logtan(x) = log(tan((2x + PI) / 4)
 static bool logtan(Instruction &Inst) {
+  // This version does not seem to appear in IR
+  // return match(
+  //     &Inst,
+  //     m_UnaryCall(
+  //         LogName,
+  //         m_UnaryCall(TanName,
+  //                     m_FDiv(m_c_FAdd(m_c_FMul(m_SpecificFP(2.0f),
+  //                     m_Value(X)),
+  //                                     m_SpecificFP(3.1415926f)),
+  //                            m_SpecificFP(4.0f)))));
+
   return match(
       &Inst,
-      m_UnaryCall(
-          LogName,
-          m_UnaryCall(TanName,
-                      m_FDiv(m_c_FAdd(m_c_FMul(m_SpecificFP(2.0f), m_Value(X)),
-                                      m_SpecificFP(3.1415926f)),
-                             m_SpecificFP(4.0f)))));
+      m_UnaryCall(LogName,
+                  m_UnaryCall(TanName, m_Intrinsic<Intrinsic::fmuladd>(
+                                           m_Value(X), m_SpecificFP(0.5f),
+                                           m_SpecificFP(PIover4)))));
 }
 
 const std::vector<SpecialPattern> SpecialPatterns = {{"log1pmd", log1pmd},
@@ -57,7 +66,8 @@ bool CommutativeMatcher::runOnModule(Module &M) {
 
     for (Instruction &Inst : instructions(F)) {
       // if (auto *call = dyn_cast<CallInst>(&Inst))
-      //   outs() << "Found call to " << call->getCalledFunction()->getName() << "\n";
+      //   outs() << "Found call to " << call->getCalledFunction()->getName() <<
+      //   "\n";
 
       for (SpecialPattern matcher : SpecialPatterns) {
         if (matcher.match(Inst)) {
