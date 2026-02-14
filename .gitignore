@@ -1,4 +1,4 @@
 build*/
-temp*/
+# temp*/
 .vscode/
 compile_commands.json
