@@ -32,6 +32,15 @@ static bool log1pmd(Instruction &Inst) {
          X == Xt;
 }
 
+// log1mpd(x) = log((1 - x) / (1 + x))
+static bool log1mpd(Instruction &Inst) {
+  return match(&Inst, m_UnaryCall(
+                          LogName,
+                          m_FDiv(m_FSub(m_SpecificFP(1.0f), m_Value(X)),
+                                 m_c_FAdd(m_SpecificFP(1.0f), m_Value(Xt))))) &&
+         X == Xt;
+}
+
 // verdcos(x) = 1 - cos(2x)
 static bool verdcos(Instruction &Inst) {
   return match(&Inst, m_FSub(m_SpecificFP(1.0),
@@ -52,12 +61,14 @@ static bool logtan(Instruction &Inst) {
   //                                     m_SpecificFP(3.1415926f)),
   //                            m_SpecificFP(4.0f)))));
 
+  // Observed patterns:
+  // log(tan(fmuladd(x, 0.5, PI/4)))
+  // log(tan(x*0.5 + PI/4))
   return match(
-      &Inst,
-      m_UnaryCall(LogName,
-                  m_UnaryCall(TanName, m_Intrinsic<Intrinsic::fmuladd>(
-                                           m_Value(X), m_SpecificFP(0.5f),
-                                           m_SpecificFP(PIover4)))));
+      &Inst, m_UnaryCall(LogName,
+                         m_UnaryCall(TanName,
+                                     m_c_FMALike(m_Value(X), m_SpecificFP(0.5f),
+                                                 m_SpecificFP(PIover4)))));
 }
 
 // hypot(x, y) = sqrt(x^2 + y^2)
@@ -68,10 +79,12 @@ static bool hypot(Instruction &Inst) {
   //                                   m_c_FMul(m_Value(Y), m_Value(Yt))))) &&
   //        X == Xt && Y == Yt;
 
-  return match(
-             &Inst,
-             m_Intrinsic<Intrinsic::sqrt>(m_Intrinsic<Intrinsic::fmuladd>(
-                 m_Value(X), m_Value(Xt), m_FMul(m_Value(Y), m_Value(Yt))))) &&
+  // Observed pattern:
+  // sqrt(fma(x, x, y*y))
+  // sqrt(x*x + y*y)
+  return match(&Inst, m_Intrinsic<Intrinsic::sqrt>(
+                          m_c_FMALike(m_Value(X), m_Value(Xt),
+                                      m_FMul(m_Value(Y), m_Value(Yt))))) &&
          X == Xt && Y == Yt;
 }
 
@@ -88,6 +101,13 @@ static bool cosrat(Instruction &Inst) {
                          m_FDiv(m_c_FAdd(m_Value(X), m_Value(Y)), m_Value(Z))));
 }
 
+// sinrat(x, y, z) = sin((x + y) / z)
+static bool sinrat(Instruction &Inst) {
+  return match(
+      &Inst, m_UnaryCall(SinName,
+                         m_FDiv(m_c_FAdd(m_Value(X), m_Value(Y)), m_Value(Z))));
+}
+
 // CommutativeMatcher implementation
 bool CommutativeMatcher::runOnModule(Module &M) {
   LLVMContext &Ctx = M.getContext();
@@ -98,10 +118,10 @@ bool CommutativeMatcher::runOnModule(Module &M) {
   FunctionType *fTy2 = FunctionType::get(dTy, {dTy, dTy}, false);
   FunctionType *fTy3 = FunctionType::get(dTy, {dTy, dTy, dTy}, false);
   std::vector<SpecialPattern> SpecialPatterns = {
-      {"log1pmd", log1pmd, fTy1}, {"verdcos", verdcos, fTy1},
-      {"logtan", logtan, fTy1},   {"hypot_rewrite", hypot, fTy2},
-      {"log1m", log1m, fTy1},     {"cosrat", cosrat, fTy3},
-  };
+      {"log1pmd", log1pmd, fTy1},     {"log1mpd", log1mpd, fTy1},
+      {"verdcos", verdcos, fTy1},     {"logtan", logtan, fTy1},
+      {"hypot_rewrite", hypot, fTy2}, {"log1m", log1m, fTy1},
+      {"cosrat", cosrat, fTy3},       {"sinrat", sinrat, fTy3}};
 
   bool anyMatch = false;
   std::vector<Instruction *> toErase;

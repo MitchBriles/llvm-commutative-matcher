@@ -1,11 +1,12 @@
 #ifndef COMMUTATIVE_MATCHER_H
 #define COMMUTATIVE_MATCHER_H
 
+#include "llvm/IR/Intrinsics.h"
 #include "llvm/IR/Module.h"
-#include "llvm/Passes/PassBuilder.h"
 #include "llvm/IR/PassManager.h"
-#include "llvm/Pass.h"
 #include "llvm/IR/PatternMatch.h"
+#include "llvm/Pass.h"
+#include "llvm/Passes/PassBuilder.h"
 
 using namespace llvm;
 using namespace llvm::PatternMatch;
@@ -18,7 +19,7 @@ const StringRef SqrtName = "sqrt";
 
 const double PIover4 = 0.7853981633974483;
 
-// Extending PatternMatch.h 
+// Extending PatternMatch.h
 template <typename OP_t> struct AnyUnaryCall_match {
   OP_t X;
   const StringRef Name;
@@ -39,37 +40,41 @@ template <typename OP_t> struct AnyUnaryCall_match {
 };
 
 template <typename OP_t>
-inline AnyUnaryCall_match<OP_t> m_UnaryCall(const StringRef &Name, const OP_t &X) {
+inline AnyUnaryCall_match<OP_t> m_UnaryCall(const StringRef &Name,
+                                            const OP_t &X) {
   return AnyUnaryCall_match<OP_t>(X, Name);
 }
 
-/// Matches instructions with Opcode and three operands.
-// template <typename T0, typename T1, typename T2>
-// struct ThreeOps_c_match {
-//   T0 Op1;
-//   T1 Op2;
-//   T2 Op3;
+template <typename OP0_t, typename OP1_t, typename OP2_t> struct FMALike_match {
+  OP0_t X;
+  OP1_t Y;
+  OP2_t Z;
 
-//   ThreeOps_c_match(const T0 &Op1, const T1 &Op2, const T2 &Op3)
-//       : Op1(Op1), Op2(Op2), Op3(Op3) {}
+  FMALike_match(const OP0_t &X, const OP1_t &Y, const OP2_t &Z)
+      : X(X), Y(Y), Z(Z) {}
 
-//   template <typename OpTy> bool match(OpTy *V) const {
-//     if (V->getValueID() == Value::InstructionVal + Opcode) {
-//       auto *I = cast<Instruction>(V);
-//       if (!Op1.match(I->getOperand(0)))
-//         return false;
-//       if (Op2.match(I->getOperand(1)) && Op3.match(I->getOperand(2)))
-//         return true;
-//       return CommutableOp2Op3 && Op2.match(I->getOperand(2)) &&
-//              Op3.match(I->getOperand(1));
-//     }
-//     return false;
-//   }
-// };
+  template <typename OpTy> bool match(OpTy *V) const {
+    return llvm::PatternMatch::match(V, m_c_FAdd(m_c_FMul(X, Y), Z)) ||
+           llvm::PatternMatch::match(
+               V, m_Intrinsic<Intrinsic::fmuladd>(X, Y, Z)) ||
+           llvm::PatternMatch::match(
+               V, m_Intrinsic<Intrinsic::fmuladd>(Y, X, Z)) ||
+           llvm::PatternMatch::match(V, m_Intrinsic<Intrinsic::fma>(X, Y, Z)) ||
+           llvm::PatternMatch::match(V, m_Intrinsic<Intrinsic::fma>(Y, X, Z));
+  }
+};
 
-/// Match intrinsic calls like this:
-/// m_Intrinsic<Intrinsic::fabs>(m_Value(X))
+template <typename OP0_t, typename OP1_t, typename OP2_t>
+inline FMALike_match<OP0_t, OP1_t, OP2_t>
+m_c_FMALike(const OP0_t &X, const OP1_t &Y, const OP2_t &Z) {
+  return FMALike_match<OP0_t, OP1_t, OP2_t>(X, Y, Z);
+}
 
+template <typename OP0_t, typename OP1_t, typename OP2_t>
+inline FMALike_match<OP0_t, OP1_t, OP2_t>
+m_FMALike(const OP0_t &X, const OP1_t &Y, const OP2_t &Z) {
+  return m_c_FMALike(X, Y, Z);
+}
 
 // New PM interface
 struct CommutativeMatcher : public llvm::PassInfoMixin<CommutativeMatcher> {

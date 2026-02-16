@@ -53,7 +53,7 @@ define hidden noundef ptr @_Z34pj_projection_specific_setup_tpeqdP8PJconsts(ptr 
 
 4:                                                ; preds = %1
   %5 = tail call noundef ptr @_Z21pj_default_destructorP8PJconstsi(ptr noundef %0, i32 noundef 4096)
-  br label %116
+  br label %113
 
 6:                                                ; preds = %1
   %7 = getelementptr inbounds nuw i8, ptr %0, i64 88
@@ -83,7 +83,7 @@ define hidden noundef ptr @_Z34pj_projection_specific_setup_tpeqdP8PJconsts(ptr 
 28:                                               ; preds = %6
   tail call void (ptr, ptr, ...) @_Z14proj_log_errorPK8PJconstsPKcz(ptr noundef nonnull %0, ptr noundef nonnull @.str.5)
   %29 = tail call noundef ptr @_Z21pj_default_destructorP8PJconstsi(ptr noundef nonnull %0, i32 noundef 1027)
-  br label %116
+  br label %113
 
 30:                                               ; preds = %6
   %31 = fadd double %16, %24
@@ -122,88 +122,85 @@ define hidden noundef ptr @_Z34pj_projection_specific_setup_tpeqdP8PJconsts(ptr 
   %55 = tail call double @llvm.fmuladd.f64(double %54, double %53, double %45)
   %56 = tail call double @sin(double noundef %36) #6, !tbaa !47
   %57 = fmul double %39, %56
-  %58 = fmul double %57, %57
-  %59 = fmul double %55, %55
-  %60 = fadd double %59, %58
-  %61 = tail call double @llvm.sqrt.f64(double %60)
-  %62 = tail call double @cos(double noundef %36) #6, !tbaa !47
-  %63 = fmul double %49, %62
-  %64 = tail call double @llvm.fmuladd.f64(double %41, double %43, double %63)
-  %65 = tail call double @atan2(double noundef %61, double noundef %64) #6, !tbaa !47
-  %66 = getelementptr inbounds nuw i8, ptr %2, i64 64
-  store double %65, ptr %66, align 8, !tbaa !55
-  %67 = fcmp oeq double %65, 0.000000e+00
-  br i1 %67, label %68, label %70
+  %58 = call double @hypot_rewrite(double %55, double %57)
+  %59 = tail call double @cos(double noundef %36) #6, !tbaa !47
+  %60 = fmul double %49, %59
+  %61 = tail call double @llvm.fmuladd.f64(double %41, double %43, double %60)
+  %62 = tail call double @atan2(double noundef %58, double noundef %61) #6, !tbaa !47
+  %63 = getelementptr inbounds nuw i8, ptr %2, i64 64
+  store double %62, ptr %63, align 8, !tbaa !55
+  %64 = fcmp oeq double %62, 0.000000e+00
+  br i1 %64, label %65, label %67
 
-68:                                               ; preds = %30
+65:                                               ; preds = %30
   tail call void (ptr, ptr, ...) @_Z14proj_log_errorPK8PJconstsPKcz(ptr noundef nonnull %0, ptr noundef nonnull @.str.6)
-  %69 = tail call noundef ptr @_Z21pj_default_destructorP8PJconstsi(ptr noundef nonnull %0, i32 noundef 1027)
-  br label %116
+  %66 = tail call noundef ptr @_Z21pj_default_destructorP8PJconstsi(ptr noundef nonnull %0, i32 noundef 1027)
+  br label %113
 
-70:                                               ; preds = %30
-  %71 = fmul double %65, 5.000000e-01
-  %72 = getelementptr inbounds nuw i8, ptr %2, i64 80
-  store double %71, ptr %72, align 8, !tbaa !56
-  %73 = tail call double @sin(double noundef %36) #6, !tbaa !47
-  %74 = fmul double %39, %73
-  %75 = tail call double @atan2(double noundef %74, double noundef %55) #6, !tbaa !47
-  %76 = load ptr, ptr %0, align 8, !tbaa !42
-  %77 = tail call double @sin(double noundef %75) #6, !tbaa !47
-  %78 = fmul double %38, %77
-  %79 = tail call noundef double @_Z5aasinP6pj_ctxd(ptr noundef %76, double noundef %78)
-  %80 = tail call double @cos(double noundef %79) #6, !tbaa !47
-  %81 = getelementptr inbounds nuw i8, ptr %2, i64 104
-  store double %80, ptr %81, align 8, !tbaa !57
-  %82 = tail call double @sin(double noundef %79) #6, !tbaa !47
-  %83 = getelementptr inbounds nuw i8, ptr %2, i64 112
-  store double %82, ptr %83, align 8, !tbaa !58
-  %84 = load double, ptr %2, align 8, !tbaa !48
-  %85 = tail call double @cos(double noundef %75) #6, !tbaa !47
-  %86 = fmul double %84, %85
-  %87 = load double, ptr %42, align 8, !tbaa !50
-  %88 = tail call double @atan2(double noundef %86, double noundef %87) #6, !tbaa !47
-  %89 = load double, ptr %72, align 8, !tbaa !56
-  %90 = fsub double %88, %89
-  %91 = tail call noundef double @_Z6adjlond(double noundef %90)
-  %92 = getelementptr inbounds nuw i8, ptr %2, i64 120
-  store double %91, ptr %92, align 8, !tbaa !59
-  %93 = load double, ptr %37, align 8, !tbaa !45
-  %94 = fmul double %93, 5.000000e-01
-  store double %94, ptr %37, align 8, !tbaa !45
-  %95 = tail call double @sin(double noundef %75) #6, !tbaa !47
-  %96 = load double, ptr %42, align 8, !tbaa !50
-  %97 = fmul double %95, %96
-  %98 = tail call double @cos(double noundef %75) #6, !tbaa !47
-  %99 = tail call double @atan2(double noundef %97, double noundef %98) #6, !tbaa !47
-  %100 = fsub double 0x3FF921FB54442D18, %99
-  %101 = fsub double %100, %94
-  %102 = getelementptr inbounds nuw i8, ptr %2, i64 128
-  store double %101, ptr %102, align 8, !tbaa !60
-  %103 = load double, ptr %72, align 8, !tbaa !56
-  %104 = tail call double @tan(double noundef %103) #6, !tbaa !47
-  %105 = getelementptr inbounds nuw i8, ptr %2, i64 88
-  store double %104, ptr %105, align 8, !tbaa !61
-  %106 = tail call double @sin(double noundef %103) #6, !tbaa !47
+67:                                               ; preds = %30
+  %68 = fmul double %62, 5.000000e-01
+  %69 = getelementptr inbounds nuw i8, ptr %2, i64 80
+  store double %68, ptr %69, align 8, !tbaa !56
+  %70 = tail call double @sin(double noundef %36) #6, !tbaa !47
+  %71 = fmul double %39, %70
+  %72 = tail call double @atan2(double noundef %71, double noundef %55) #6, !tbaa !47
+  %73 = load ptr, ptr %0, align 8, !tbaa !42
+  %74 = tail call double @sin(double noundef %72) #6, !tbaa !47
+  %75 = fmul double %38, %74
+  %76 = tail call noundef double @_Z5aasinP6pj_ctxd(ptr noundef %73, double noundef %75)
+  %77 = tail call double @cos(double noundef %76) #6, !tbaa !47
+  %78 = getelementptr inbounds nuw i8, ptr %2, i64 104
+  store double %77, ptr %78, align 8, !tbaa !57
+  %79 = tail call double @sin(double noundef %76) #6, !tbaa !47
+  %80 = getelementptr inbounds nuw i8, ptr %2, i64 112
+  store double %79, ptr %80, align 8, !tbaa !58
+  %81 = load double, ptr %2, align 8, !tbaa !48
+  %82 = tail call double @cos(double noundef %72) #6, !tbaa !47
+  %83 = fmul double %81, %82
+  %84 = load double, ptr %42, align 8, !tbaa !50
+  %85 = tail call double @atan2(double noundef %83, double noundef %84) #6, !tbaa !47
+  %86 = load double, ptr %69, align 8, !tbaa !56
+  %87 = fsub double %85, %86
+  %88 = tail call noundef double @_Z6adjlond(double noundef %87)
+  %89 = getelementptr inbounds nuw i8, ptr %2, i64 120
+  store double %88, ptr %89, align 8, !tbaa !59
+  %90 = load double, ptr %37, align 8, !tbaa !45
+  %91 = fmul double %90, 5.000000e-01
+  store double %91, ptr %37, align 8, !tbaa !45
+  %92 = tail call double @sin(double noundef %72) #6, !tbaa !47
+  %93 = load double, ptr %42, align 8, !tbaa !50
+  %94 = fmul double %92, %93
+  %95 = tail call double @cos(double noundef %72) #6, !tbaa !47
+  %96 = tail call double @atan2(double noundef %94, double noundef %95) #6, !tbaa !47
+  %97 = fsub double 0x3FF921FB54442D18, %96
+  %98 = fsub double %97, %91
+  %99 = getelementptr inbounds nuw i8, ptr %2, i64 128
+  store double %98, ptr %99, align 8, !tbaa !60
+  %100 = load double, ptr %69, align 8, !tbaa !56
+  %101 = tail call double @tan(double noundef %100) #6, !tbaa !47
+  %102 = getelementptr inbounds nuw i8, ptr %2, i64 88
+  store double %101, ptr %102, align 8, !tbaa !61
+  %103 = tail call double @sin(double noundef %100) #6, !tbaa !47
+  %104 = fdiv double 5.000000e-01, %103
+  %105 = getelementptr inbounds nuw i8, ptr %2, i64 96
+  store double %104, ptr %105, align 8, !tbaa !62
+  %106 = load double, ptr %63, align 8, !tbaa !55
   %107 = fdiv double 5.000000e-01, %106
-  %108 = getelementptr inbounds nuw i8, ptr %2, i64 96
-  store double %107, ptr %108, align 8, !tbaa !62
-  %109 = load double, ptr %66, align 8, !tbaa !55
-  %110 = fdiv double 5.000000e-01, %109
-  %111 = getelementptr inbounds nuw i8, ptr %2, i64 56
-  store double %110, ptr %111, align 8, !tbaa !63
-  %112 = fmul double %109, %109
-  store double %112, ptr %66, align 8, !tbaa !55
-  %113 = getelementptr inbounds nuw i8, ptr %0, i64 112
-  store ptr @_ZL15tpeqd_s_inverse5PJ_XYP8PJconsts, ptr %113, align 8, !tbaa !64
-  %114 = getelementptr inbounds nuw i8, ptr %0, i64 104
-  store ptr @_ZL15tpeqd_s_forward5PJ_LPP8PJconsts, ptr %114, align 8, !tbaa !65
-  %115 = getelementptr inbounds nuw i8, ptr %0, i64 216
-  store double 0.000000e+00, ptr %115, align 8, !tbaa !66
-  br label %116
+  %108 = getelementptr inbounds nuw i8, ptr %2, i64 56
+  store double %107, ptr %108, align 8, !tbaa !63
+  %109 = fmul double %106, %106
+  store double %109, ptr %63, align 8, !tbaa !55
+  %110 = getelementptr inbounds nuw i8, ptr %0, i64 112
+  store ptr @_ZL15tpeqd_s_inverse5PJ_XYP8PJconsts, ptr %110, align 8, !tbaa !64
+  %111 = getelementptr inbounds nuw i8, ptr %0, i64 104
+  store ptr @_ZL15tpeqd_s_forward5PJ_LPP8PJconsts, ptr %111, align 8, !tbaa !65
+  %112 = getelementptr inbounds nuw i8, ptr %0, i64 216
+  store double 0.000000e+00, ptr %112, align 8, !tbaa !66
+  br label %113
 
-116:                                              ; preds = %70, %68, %28, %4
-  %117 = phi ptr [ %5, %4 ], [ %29, %28 ], [ %69, %68 ], [ %0, %70 ]
-  ret ptr %117
+113:                                              ; preds = %67, %65, %28, %4
+  %114 = phi ptr [ %5, %4 ], [ %29, %28 ], [ %66, %65 ], [ %0, %67 ]
+  ret ptr %114
 }
 
 declare noundef ptr @_Z6pj_newv() local_unnamed_addr #1
@@ -372,6 +369,8 @@ declare noundef double @_Z5asqrtd(double noundef) local_unnamed_addr #1
 
 ; Function Attrs: nocallback nocreateundeforpoison nofree nosync nounwind speculatable willreturn memory(none)
 declare double @llvm.sqrt.f64(double) #4
+
+declare double @hypot_rewrite(double, double)
 
 attributes #0 = { mustprogress sspstrong uwtable "min-legal-vector-width"="0" "no-trapping-math"="true" "stack-protector-buffer-size"="8" "target-cpu"="x86-64" "target-features"="+cmov,+cx8,+fxsr,+mmx,+sse,+sse2,+x87" "tune-cpu"="generic" }
 attributes #1 = { "no-trapping-math"="true" "stack-protector-buffer-size"="8" "target-cpu"="x86-64" "target-features"="+cmov,+cx8,+fxsr,+mmx,+sse,+sse2,+x87" "tune-cpu"="generic" }

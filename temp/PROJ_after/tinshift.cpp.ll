@@ -10295,7 +10295,7 @@ define internal fastcc noundef ptr @_ZN8TINShiftL12FindTriangleERKNS_12TINShiftF
   br i1 %323, label %324, label %326
 
 324:                                              ; preds = %311
-  %325 = tail call double @llvm.sqrt.f64(double %322)
+  %325 = call double @hypot_rewrite(double %318, double %320)
   br label %326
 
 326:                                              ; preds = %324, %311, %309, %306, %208, %187, %180, %173, %166, %122
@@ -35456,6 +35456,8 @@ declare void @llvm.lifetime.end.i64(i64)
 
 ; Function Attrs: nocallback nofree nosync nounwind willreturn memory(argmem: readwrite)
 declare void @llvm.lifetime.end.p0(ptr captures(none)) #28
+
+declare double @hypot_rewrite(double, double)
 
 attributes #0 = { mustprogress nofree norecurse nosync nounwind sspstrong willreturn memory(argmem: read) uwtable "min-legal-vector-width"="0" "no-trapping-math"="true" "stack-protector-buffer-size"="8" "target-cpu"="x86-64" "target-features"="+cmov,+cx8,+fxsr,+mmx,+sse,+sse2,+x87" "tune-cpu"="generic" }
 attributes #1 = { mustprogress sspstrong uwtable "min-legal-vector-width"="0" "no-trapping-math"="true" "stack-protector-buffer-size"="8" "target-cpu"="x86-64" "target-features"="+cmov,+cx8,+fxsr,+mmx,+sse,+sse2,+x87" "tune-cpu"="generic" }
