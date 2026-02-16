@@ -128,14 +128,14 @@ define internal void @_ZL8geodetic6PJ_XYZP8PJconsts(ptr dead_on_unwind noalias w
   %11 = getelementptr inbounds nuw i8, ptr %1, i64 16
   %12 = load double, ptr %11, align 8, !tbaa !55
   %13 = fmul double %6, %12
-  %14 = call double @hypot(double %7, double %10)
+  %14 = call double @hypot_rewrite(double %7, double %10)
   %15 = getelementptr inbounds nuw i8, ptr %2, i64 272
   %16 = load double, ptr %15, align 8, !tbaa !57
   %17 = fsub double 1.000000e+00, %16
   %18 = fmul double %17, %14
   %19 = fmul double %18, %18
   %20 = tail call double @llvm.fmuladd.f64(double %13, double %13, double %19)
-  %21 = call double @hypot(double %13, double %18)
+  %21 = call double @hypot_rewrite(double %13, double %18)
   %22 = fcmp une double %20, 0.000000e+00
   %23 = fdiv double 1.000000e+00, %21
   %24 = fmul double %18, %23
@@ -156,7 +156,7 @@ define internal void @_ZL8geodetic6PJ_XYZP8PJconsts(ptr dead_on_unwind noalias w
   %39 = tail call double @llvm.fmuladd.f64(double %38, double %27, double %14)
   %40 = fmul double %39, %39
   %41 = tail call double @llvm.fmuladd.f64(double %33, double %33, double %40)
-  %42 = call double @hypot(double %33, double %39)
+  %42 = call double @hypot_rewrite(double %33, double %39)
   %43 = fcmp une double %41, 0.000000e+00
   %44 = fdiv double 1.000000e+00, %42
   %45 = fmul double %39, %44
@@ -317,7 +317,7 @@ declare void @llvm.lifetime.end.i64(i64)
 ; Function Attrs: nocallback nofree nosync nounwind willreturn memory(argmem: readwrite)
 declare void @llvm.lifetime.end.p0(ptr captures(none)) #7
 
-declare double @hypot(double, double)
+declare double @hypot_rewrite(double, double)
 
 attributes #0 = { mustprogress sspstrong uwtable "min-legal-vector-width"="0" "no-trapping-math"="true" "stack-protector-buffer-size"="8" "target-cpu"="x86-64" "target-features"="+cmov,+cx8,+fxsr,+mmx,+sse,+sse2,+x87" "tune-cpu"="generic" }
 attributes #1 = { mustprogress nofree norecurse nosync nounwind sspstrong willreturn memory(argmem: write) uwtable "min-legal-vector-width"="0" "no-trapping-math"="true" "stack-protector-buffer-size"="8" "target-cpu"="x86-64" "target-features"="+cmov,+cx8,+fxsr,+mmx,+sse,+sse2,+x87" "tune-cpu"="generic" }

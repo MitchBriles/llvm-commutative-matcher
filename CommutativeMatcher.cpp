@@ -99,7 +99,7 @@ bool CommutativeMatcher::runOnModule(Module &M) {
   FunctionType *fTy3 = FunctionType::get(dTy, {dTy, dTy, dTy}, false);
   std::vector<SpecialPattern> SpecialPatterns = {
       {"log1pmd", log1pmd, fTy1}, {"verdcos", verdcos, fTy1},
-      {"logtan", logtan, fTy1},   {"hypot", hypot, fTy2},
+      {"logtan", logtan, fTy1},   {"hypot_rewrite", hypot, fTy2},
       {"log1m", log1m, fTy1},     {"cosrat", cosrat, fTy3},
   };
 

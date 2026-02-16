@@ -214,7 +214,7 @@ define internal fastcc noundef ptr @_ZL9som_setupP8PJconsts(ptr noundef returned
   %62 = tail call double @llvm.fmuladd.f64(double %61, double %12, double %60)
   %63 = fmul double %62, %58
   %64 = fmul double %56, %56
-  %65 = call double @hypot(double %37, double %56)
+  %65 = call double @hypot_rewrite(double %37, double %56)
   %66 = fneg double %64
   %67 = tail call double @llvm.fmuladd.f64(double %63, double %37, double %66)
   %68 = fdiv double %67, %65
@@ -238,7 +238,7 @@ define internal fastcc noundef ptr @_ZL9som_setupP8PJconsts(ptr noundef returned
   %86 = tail call double @llvm.fmuladd.f64(double %61, double %12, double %85)
   %87 = fmul double %83, %86
   %88 = fmul double %81, %81
-  %89 = call double @hypot(double %37, double %81)
+  %89 = call double @hypot_rewrite(double %37, double %81)
   %90 = fneg double %88
   %91 = tail call double @llvm.fmuladd.f64(double %87, double %37, double %90)
   %92 = fmul double %91, 4.000000e+00
@@ -267,7 +267,7 @@ define internal fastcc noundef ptr @_ZL9som_setupP8PJconsts(ptr noundef returned
   %115 = tail call double @llvm.fmuladd.f64(double %61, double %12, double %114)
   %116 = fmul double %112, %115
   %117 = fmul double %110, %110
-  %118 = call double @hypot(double %37, double %110)
+  %118 = call double @hypot_rewrite(double %37, double %110)
   %119 = fneg double %117
   %120 = tail call double @llvm.fmuladd.f64(double %116, double %37, double %119)
   %121 = fmul double %120, 4.000000e+00
@@ -296,7 +296,7 @@ define internal fastcc noundef ptr @_ZL9som_setupP8PJconsts(ptr noundef returned
   %144 = tail call double @llvm.fmuladd.f64(double %61, double %12, double %143)
   %145 = fmul double %141, %144
   %146 = fmul double %139, %139
-  %147 = call double @hypot(double %37, double %139)
+  %147 = call double @hypot_rewrite(double %37, double %139)
   %148 = fneg double %146
   %149 = tail call double @llvm.fmuladd.f64(double %145, double %37, double %148)
   %150 = fmul double %149, 4.000000e+00
@@ -325,7 +325,7 @@ define internal fastcc noundef ptr @_ZL9som_setupP8PJconsts(ptr noundef returned
   %173 = tail call double @llvm.fmuladd.f64(double %61, double %12, double %172)
   %174 = fmul double %170, %173
   %175 = fmul double %168, %168
-  %176 = call double @hypot(double %37, double %168)
+  %176 = call double @hypot_rewrite(double %37, double %168)
   %177 = fneg double %175
   %178 = tail call double @llvm.fmuladd.f64(double %174, double %37, double %177)
   %179 = fmul double %178, 4.000000e+00
@@ -354,7 +354,7 @@ define internal fastcc noundef ptr @_ZL9som_setupP8PJconsts(ptr noundef returned
   %202 = tail call double @llvm.fmuladd.f64(double %61, double %12, double %201)
   %203 = fmul double %199, %202
   %204 = fmul double %197, %197
-  %205 = call double @hypot(double %37, double %197)
+  %205 = call double @hypot_rewrite(double %37, double %197)
   %206 = fneg double %204
   %207 = tail call double @llvm.fmuladd.f64(double %203, double %37, double %206)
   %208 = fmul double %207, 4.000000e+00
@@ -383,7 +383,7 @@ define internal fastcc noundef ptr @_ZL9som_setupP8PJconsts(ptr noundef returned
   %231 = tail call double @llvm.fmuladd.f64(double %61, double %12, double %230)
   %232 = fmul double %228, %231
   %233 = fmul double %226, %226
-  %234 = call double @hypot(double %37, double %226)
+  %234 = call double @hypot_rewrite(double %37, double %226)
   %235 = fneg double %233
   %236 = tail call double @llvm.fmuladd.f64(double %232, double %37, double %235)
   %237 = fmul double %236, 2.000000e+00
@@ -412,7 +412,7 @@ define internal fastcc noundef ptr @_ZL9som_setupP8PJconsts(ptr noundef returned
   %260 = tail call double @llvm.fmuladd.f64(double %61, double %12, double %259)
   %261 = fmul double %257, %260
   %262 = fmul double %255, %255
-  %263 = call double @hypot(double %37, double %255)
+  %263 = call double @hypot_rewrite(double %37, double %255)
   %264 = fneg double %262
   %265 = tail call double @llvm.fmuladd.f64(double %261, double %37, double %264)
   %266 = fmul double %265, 2.000000e+00
@@ -441,7 +441,7 @@ define internal fastcc noundef ptr @_ZL9som_setupP8PJconsts(ptr noundef returned
   %289 = tail call double @llvm.fmuladd.f64(double %61, double %12, double %288)
   %290 = fmul double %286, %289
   %291 = fmul double %284, %284
-  %292 = call double @hypot(double %37, double %284)
+  %292 = call double @hypot_rewrite(double %37, double %284)
   %293 = fneg double %291
   %294 = tail call double @llvm.fmuladd.f64(double %290, double %37, double %293)
   %295 = fmul double %294, 2.000000e+00
@@ -470,7 +470,7 @@ define internal fastcc noundef ptr @_ZL9som_setupP8PJconsts(ptr noundef returned
   %318 = tail call double @llvm.fmuladd.f64(double %61, double %12, double %317)
   %319 = fmul double %315, %318
   %320 = fmul double %313, %313
-  %321 = call double @hypot(double %37, double %313)
+  %321 = call double @hypot_rewrite(double %37, double %313)
   %322 = fneg double %320
   %323 = tail call double @llvm.fmuladd.f64(double %319, double %37, double %322)
   %324 = fmul double %323, 2.000000e+00
@@ -499,7 +499,7 @@ define internal fastcc noundef ptr @_ZL9som_setupP8PJconsts(ptr noundef returned
   %347 = tail call double @llvm.fmuladd.f64(double %61, double %12, double %346)
   %348 = fmul double %347, %344
   %349 = fmul double %342, %342
-  %350 = call double @hypot(double %37, double %342)
+  %350 = call double @hypot_rewrite(double %37, double %342)
   %351 = fneg double %349
   %352 = tail call double @llvm.fmuladd.f64(double %348, double %37, double %351)
   %353 = fdiv double %352, %350
@@ -1144,7 +1144,7 @@ define internal { double, double } @_ZL13som_e_forward5PJ_LPP8PJconsts(double %0
   %191 = fmul double %178, %190
   %192 = getelementptr inbounds nuw i8, ptr %5, i64 96
   %193 = load double, ptr %192, align 8, !tbaa !59
-  %194 = call double @hypot(double %193, double %191)
+  %194 = call double @hypot_rewrite(double %193, double %191)
   %195 = getelementptr inbounds nuw i8, ptr %5, i64 16
   %196 = load double, ptr %195, align 8, !tbaa !63
   %197 = load double, ptr %5, align 8, !tbaa !61
@@ -1215,7 +1215,7 @@ declare void @llvm.lifetime.end.i64(i64)
 ; Function Attrs: nocallback nofree nosync nounwind willreturn memory(argmem: readwrite)
 declare void @llvm.lifetime.end.p0(ptr captures(none)) #6
 
-declare double @hypot(double, double)
+declare double @hypot_rewrite(double, double)
 
 declare double @logtan(double)
 

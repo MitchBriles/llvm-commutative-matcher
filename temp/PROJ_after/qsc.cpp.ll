@@ -198,7 +198,7 @@ declare noundef ptr @_Z21pj_default_destructorP8PJconstsi(ptr noundef, i32 nound
 define internal { double, double } @_ZL13qsc_e_inverse5PJ_XYP8PJconsts(double %0, double %1, ptr noundef readonly captures(none) %2) #3 {
   %4 = getelementptr inbounds nuw i8, ptr %2, i64 88
   %5 = load ptr, ptr %4, align 8, !tbaa !4
-  %6 = call double @hypot(double %0, double %1)
+  %6 = call double @hypot_rewrite(double %0, double %1)
   %7 = tail call double @atan(double noundef %6) #7, !tbaa !47
   %8 = tail call double @atan2(double noundef %1, double noundef %0) #7, !tbaa !47
   %9 = fcmp oge double %0, 0.000000e+00
@@ -902,7 +902,7 @@ declare double @acos(double noundef) local_unnamed_addr #5
 ; Function Attrs: nocallback nocreateundeforpoison nofree nosync nounwind speculatable willreturn memory(none)
 declare double @llvm.sqrt.f64(double) #4
 
-declare double @hypot(double, double)
+declare double @hypot_rewrite(double, double)
 
 attributes #0 = { mustprogress sspstrong uwtable "min-legal-vector-width"="0" "no-trapping-math"="true" "stack-protector-buffer-size"="8" "target-cpu"="x86-64" "target-features"="+cmov,+cx8,+fxsr,+mmx,+sse,+sse2,+x87" "tune-cpu"="generic" }
 attributes #1 = { "no-trapping-math"="true" "stack-protector-buffer-size"="8" "target-cpu"="x86-64" "target-features"="+cmov,+cx8,+fxsr,+mmx,+sse,+sse2,+x87" "tune-cpu"="generic" }

@@ -372,7 +372,7 @@ define internal { double, double } @_ZL16krovak_e_inverse5PJ_XYP8PJconsts(double
   br i1 %84, label %98, label %85
 
 85:                                               ; preds = %77
-  %86 = call double @hypot(double %78, double %79)
+  %86 = call double @hypot_rewrite(double %78, double %79)
   %87 = getelementptr inbounds nuw i8, ptr %5, i64 24
   %88 = load double, ptr %87, align 8, !tbaa !57
   %89 = fdiv double %88, %86
@@ -629,7 +629,7 @@ declare void @_Z22proj_context_errno_setP6pj_ctxi(ptr noundef, i32 noundef) loca
 ; Function Attrs: nocallback nocreateundeforpoison nofree nosync nounwind speculatable willreturn memory(none)
 declare double @llvm.sqrt.f64(double) #4
 
-declare double @hypot(double, double)
+declare double @hypot_rewrite(double, double)
 
 attributes #0 = { mustprogress sspstrong uwtable "min-legal-vector-width"="0" "no-trapping-math"="true" "stack-protector-buffer-size"="8" "target-cpu"="x86-64" "target-features"="+cmov,+cx8,+fxsr,+mmx,+sse,+sse2,+x87" "tune-cpu"="generic" }
 attributes #1 = { "no-trapping-math"="true" "stack-protector-buffer-size"="8" "target-cpu"="x86-64" "target-features"="+cmov,+cx8,+fxsr,+mmx,+sse,+sse2,+x87" "tune-cpu"="generic" }
