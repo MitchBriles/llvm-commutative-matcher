@@ -10,7 +10,6 @@ ninja -C build
 ```
 $LLVM_DIR/bin/opt \
     -load-pass-plugin=build/libCommutativeMatcher.so \
-    -passes="commutative-matcher" \
-    -disable-output \
-    -S path/to/some_llvm_ir.ll
-    
+    -passes="commutative-matcher,dce" \
+    -S path/to/some_llvm_ir.ll -o path/to/output.ll
+```
